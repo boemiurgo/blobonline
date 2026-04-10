@@ -6,7 +6,7 @@ const state = {
   qty: '1000',
   color: 'black',
   weight: '140',
-  lang: localStorage.getItem('bloborg.lang') || 'it',
+  lang: 'en',
 };
 
 // Formspree endpoint for automatic quote sending (no mail client / mailto).
@@ -317,17 +317,17 @@ const EDITABLE_DEFAULTS = {
     en: 'Turn your music into art',
   },
   'hero.title': {
-    it: '12", 7" e copie singole',
-    en: '<span class="hero__title-top">Custom vinyls, made your way:</span><span class="hero__title-bottom">12", 7" and one-off copies</span>',
+    it: 'Vinili personalizzati, a modo tuo.',
+    en: 'Custom vinyls, made your way.',
   },
   'hero.subtitle': {
-    it: 'Pressing vinili, copertine ed extra. Seleziona le opzioni e richiedi un preventivo.',
-    en: 'Vinyl pressing, sleeves, and extras. Choose your options and request a quote.',
+    it: '12", 7" e copie singole. Scegli le opzioni e richiedi un preventivo.',
+    en: '12", 7" and one-off copies. Choose your options and request a quote.',
   },
   'prices.title': { it: 'Prezzi', en: 'Prices' },
   'prices.subtitle': {
-    it: 'Layout "a griglia" come nel riferimento: scelte in alto, riepilogo sotto.',
-    en: 'Grid-style layout like the reference: choices on top, summary below.',
+    it: 'Seleziona cio di cui hai bisogno e vedi subito cosa spenderai.',
+    en: "Select what you need and find out how much you'll spend.",
   },
   'prices.note': {
     it: 'Prezzi dal listino Blob Records. Nota: i prezzi nel file indicano "solo vinile" e "con copertina" e non includono IVA.',
@@ -1152,11 +1152,8 @@ function setupEditableText() {
 
     const key = el.getAttribute('data-edit-key');
     if (!key) return;
-    const storageKey = `bloborg.edit.${state.lang}.${key}`;
-    const saved = localStorage.getItem(storageKey);
     const fallback = EDITABLE_DEFAULTS[key]?.[state.lang];
-    if (saved != null) el.innerHTML = saved;
-    else if (fallback) el.innerHTML = fallback;
+    if (fallback) el.innerHTML = fallback;
 
   });
 }
@@ -1195,10 +1192,8 @@ function applyI18n() {
   document.querySelectorAll('.editable[data-edit-key]').forEach((el) => {
     const key = el.getAttribute('data-edit-key');
     if (!key) return;
-    const saved = localStorage.getItem(`bloborg.edit.${state.lang}.${key}`);
     const fallback = EDITABLE_DEFAULTS[key]?.[state.lang];
-    if (saved != null) el.innerHTML = saved;
-    else if (fallback != null) el.innerHTML = fallback;
+    if (fallback != null) el.innerHTML = fallback;
   });
 
   renderAssetDownloadList();
@@ -1244,7 +1239,6 @@ function setupLanguageSwitcher() {
 
   function setLanguage(lang) {
     state.lang = lang === 'en' ? 'en' : 'it';
-    localStorage.setItem('bloborg.lang', state.lang);
 
     buttons.forEach((btn) => {
       const active = btn.getAttribute('data-lang-button') === state.lang;
