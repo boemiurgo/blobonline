@@ -318,7 +318,7 @@ const EDITABLE_DEFAULTS = {
   },
   'hero.title': {
     it: '12", 7" e copie singole',
-    en: '12", 7" and one-off copies',
+    en: '<span class="hero__title-top">Custom vinyls, made your way:</span><span class="hero__title-bottom">12", 7" and one-off copies</span>',
   },
   'hero.subtitle': {
     it: 'Pressing vinili, copertine ed extra. Seleziona le opzioni e richiedi un preventivo.',

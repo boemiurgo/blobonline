@@ -816,6 +816,21 @@ textarea {
   margin-right: auto;
 }
 
+.hero__title-top,
+.hero__title-bottom {
+  display: block;
+}
+
+.hero__title-top {
+  font-size: 1em;
+}
+
+.hero__title-bottom {
+  font-size: 0.62em;
+  margin-top: 10px;
+  line-height: 1.35;
+}
+
 .hero__subtitle {
   margin: 16px 0 0;
   max-width: 47ch;
