@@ -1123,8 +1123,12 @@ function setupWindowControls() {
       }
 
       if (action === 'minimize') {
-        // Toggle minimize on the clicked window only.
-        windowEl.classList.toggle('window--minimized');
+        // Minimize = collapse to title bar (do not "close"/hide the section).
+        const nextMinimized = !windowEl.classList.contains('window--minimized');
+        windowEl.classList.toggle('window--minimized', nextMinimized);
+        // The top CRT has a forced min-height; when minimized we must drop it
+        // or the user sees a big grey empty area.
+        crtEl.classList.toggle('crt--minimized', nextMinimized);
         return;
       }
 
@@ -1132,6 +1136,7 @@ function setupWindowControls() {
         windowEl.classList.remove('window--minimized');
         // Do not hide other windows: hash navigation should still scroll naturally.
         crtEl.classList.remove('crt--hidden');
+        crtEl.classList.remove('crt--minimized');
       }
     });
   });
@@ -1142,8 +1147,8 @@ function setupEditableText() {
   if (!nodes.length) return;
 
   nodes.forEach((el) => {
-    el.setAttribute('contenteditable', 'true');
-    el.setAttribute('spellcheck', 'false');
+    el.removeAttribute('contenteditable');
+    el.removeAttribute('spellcheck');
 
     const key = el.getAttribute('data-edit-key');
     if (!key) return;
@@ -1153,9 +1158,6 @@ function setupEditableText() {
     if (saved != null) el.innerHTML = saved;
     else if (fallback) el.innerHTML = fallback;
 
-    el.addEventListener('input', () => {
-      localStorage.setItem(`bloborg.edit.${state.lang}.${key}`, el.innerHTML);
-    });
   });
 }
 
@@ -1435,8 +1437,83 @@ function setupStartButton() {
   const startButton = document.getElementById('startButton');
   if (!startButton) return;
 
-  startButton.addEventListener('click', () => {
-    focusTopSection();
+  const menuPanel = document.getElementById('mobileStartMenuPanel');
+  const menuClose = document.getElementById('mobileStartMenuClose');
+  const mobileMq = window.matchMedia('(max-width: 640px)');
+
+  function isMobile() {
+    return !!mobileMq.matches;
+  }
+
+  function setMenuOpen(open) {
+    if (!menuPanel) return;
+    if (open) closeOtherTaskbarPanels(); // close any open taskbar panels
+    menuPanel.classList.toggle('is-hidden', !open);
+    startButton.setAttribute('aria-expanded', open ? 'true' : 'false');
+    startButton.classList.toggle('is-active', open);
+  }
+
+  function toggleMenu() {
+    if (!menuPanel) return;
+    const isOpen = !menuPanel.classList.contains('is-hidden');
+    setMenuOpen(!isOpen);
+  }
+
+  startButton.addEventListener('click', (e) => {
+    if (!isMobile() || !menuPanel) {
+      focusTopSection();
+      return;
+    }
+    e.stopPropagation();
+    toggleMenu();
+  });
+
+  menuClose?.addEventListener('click', () => setMenuOpen(false));
+
+  // Close menu when selecting an item; delegate "open panel" actions by clicking the existing triggers.
+  menuPanel?.addEventListener('click', (e) => {
+    const target = e.target instanceof Element ? e.target : null;
+    if (!target) return;
+
+    const triggerId = target.closest('[data-mobile-trigger]')?.getAttribute('data-mobile-trigger');
+    if (triggerId) {
+      e.preventDefault();
+      e.stopPropagation();
+      setMenuOpen(false);
+      // Trigger on the next tick so the original click can't immediately close the panel
+      // via the global "click outside" listeners used by taskbar panels.
+      window.setTimeout(() => {
+        const trigger = document.getElementById(triggerId);
+        trigger?.click();
+      }, 0);
+      return;
+    }
+
+    // Any link inside the menu should close it (hash navigation remains normal).
+    const link = target.closest('a[href]');
+    if (link) {
+      setMenuOpen(false);
+    }
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!isMobile() || !menuPanel) return;
+    const target = e.target instanceof Element ? e.target : null;
+    if (!target) return;
+    if (!target.closest('#mobileStartMenuPanel') && !target.closest('#startButton')) {
+      setMenuOpen(false);
+    }
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (!isMobile() || !menuPanel) return;
+    if (e.key === 'Escape') setMenuOpen(false);
+  });
+
+  // If we leave mobile view while the menu is open, close it.
+  mobileMq.addEventListener?.('change', () => {
+    if (!menuPanel) return;
+    if (!isMobile()) setMenuOpen(false);
   });
 }
 

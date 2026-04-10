@@ -287,12 +287,25 @@ body {
   display: none;
 }
 
+.crt--minimized {
+  min-height: 0 !important;
+}
+
+/* `#top.crt` sets a large min-height to fill the viewport; override on minimize. */
+#top.crt.crt--minimized {
+  min-height: 0 !important;
+}
+
+.window--main.window--minimized {
+  flex: 0 0 auto;
+}
+
 .crt--hidden {
-  display: none;
+  display: none !important;
 }
 
 .crt--closed {
-  display: none;
+  display: none !important;
 }
 
 /* CRT overlay (90s) – only when CRT on */
@@ -626,6 +639,43 @@ body.crt-disabled::after {
   font-size: 11px;
   line-height: 1;
   cursor: pointer;
+}
+
+.start-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.start-menu__item {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  min-height: 34px;
+  padding: 8px 10px;
+  border: 2px solid #fff;
+  border-bottom-color: #444;
+  border-right-color: #444;
+  background: #ffffff;
+  color: #000;
+  font-family: var(--px);
+  font-size: 10px;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.start-menu__item:hover {
+  background: #f3f3f3;
+}
+
+.start-menu__sep {
+  width: 100%;
+  height: 0;
+  border: none;
+  border-top: 2px solid rgba(0, 0, 0, 0.25);
+  margin: 6px 0;
 }
 
 .start-panel__body {
@@ -1501,6 +1551,31 @@ select.field__input option {
   }
   .contact-cards {
     grid-template-columns: 1fr;
+  }
+}
+
+/* Smartphone layout: taskbar shows only Start, language, and CRT toggle.
+   Everything else is accessible from the Start menu panel. */
+@media (max-width: 640px) {
+  .taskbar {
+    gap: 6px;
+  }
+
+  .taskbar__tasks,
+  .taskbar__infos,
+  .taskbar__download {
+    display: none;
+  }
+
+  .taskbar__crt {
+    margin-left: auto;
+  }
+
+  .start-panel--menu {
+    left: 8px;
+    right: 8px;
+    width: auto;
+    bottom: calc(var(--taskbar-h) + 8px);
   }
 }
 

@@ -492,91 +492,30 @@
             <span>EN</span>
           </button>
         </div>
-        <button
-          type="button"
-          class="taskbar__infos"
-          id="downloadFilesButton"
-          aria-label="Downloads"
-          data-i18n-aria-label="taskbar.downloadFilesButton"
-          aria-expanded="false"
-        >
-          <span data-i18n="taskbar.downloadFiles">Downloads</span>
-        </button>
-        <button type="button" class="taskbar__infos" id="infosButton" aria-label="Infos" data-i18n-aria-label="taskbar.infosButton" aria-expanded="false">
-          <span data-i18n="taskbar.infos">Infos</span>
-        </button>
-        <button type="button" class="taskbar__infos" id="storyButton" aria-label="About us" data-i18n-aria-label="taskbar.storyButton" aria-expanded="false">
-          <span data-i18n="taskbar.story">About us</span>
-        </button>
-        <button type="button" class="taskbar__download" id="downloadHtml" data-i18n="taskbar.download">
-          Download HTML
-        </button>
       </aside>
 
-      <section class="start-panel is-hidden" id="startStoryPanel" aria-label="About us" data-i18n-aria-label="panel.storyAria">
-        <div class="start-panel__titlebar">
-          <span class="start-panel__title" data-i18n="panel.storyTitle">About us</span>
-          <button type="button" class="start-panel__close" id="startStoryClose" aria-label="Close About us panel" data-i18n-aria-label="panel.closeStory">x</button>
-        </div>
-        <div class="start-panel__body">
-          <p class="start-panel__text editable" data-edit-key="story.text">
-            We are two friends who grew up trading records, spending weekends in small clubs, and dreaming about
-            pressing our own vinyl. Today, Blob Records is our first step: helping artists turn songs into real
-            records with care, clear prices, and hands-on support from start to finish. For now we are focused on
-            pressing vinyl, and this is only the beginning of our journey.
-          </p>
-        </div>
-      </section>
-
-      <section class="start-panel start-panel--infos is-hidden" id="infosPanel" aria-label="What you need to know" data-i18n-aria-label="panel.infosAria">
-        <div class="start-panel__titlebar">
-          <span class="start-panel__title" data-i18n="panel.infosTitle">What you need to know</span>
-          <button type="button" class="start-panel__close" id="infosClose" aria-label="Close infos panel" data-i18n-aria-label="panel.closeInfos">x</button>
-        </div>
-        <div class="start-panel__body">
-          <p class="start-panel__text editable" data-edit-key="infos.text">
-            Before pressing vinyl, prepare your master specifically for vinyl cutting: avoid extreme low-end in stereo,
-            control sibilance, and leave enough headroom. Check your track order and side length early, because longer
-            sides can reduce volume and impact. Finalize artwork with correct bleed and dimensions, and always review a
-            test pressing before approving full production. Plan timeline and budget with margin, since lacquers,
-            plating, and pressing each need careful quality checks.
-          </p>
-        </div>
-      </section>
-
+      <!-- Mobile-only Start menu (opened by the Start button). -->
       <section
-        class="start-panel start-panel--infos is-hidden"
-        id="downloadFilesPanel"
-        aria-label="Download files"
-        data-i18n-aria-label="panel.downloadAria"
+        class="start-panel start-panel--menu is-hidden"
+        id="mobileStartMenuPanel"
+        aria-label="Menu"
+        data-i18n-aria-label="taskbar.menu"
       >
         <div class="start-panel__titlebar">
-          <span class="start-panel__title" data-i18n="panel.downloadTitle">Downloads</span>
-          <button
-            type="button"
-            class="start-panel__close"
-            id="downloadFilesClose"
-            aria-label="Close download panel"
-            data-i18n-aria-label="panel.closeDownload"
-          >
-            x
-          </button>
+          <span class="start-panel__title" data-i18n="taskbar.menu">Menu</span>
+          <button type="button" class="start-panel__close" id="mobileStartMenuClose" aria-label="Close menu">x</button>
         </div>
         <div class="start-panel__body">
-          <p class="start-panel__text download-files__hint" id="downloadFilesHint" hidden data-i18n="panel.downloadHint">
-            Click a link to download.
-          </p>
-          <p class="start-panel__text" id="downloadFilesEmpty" data-i18n="panel.downloadEmpty">
-            No files available yet. Add files to the assets folder and register them in the ASSET_DOWNLOADS array in
-            app.js.
-          </p>
-          <ul
-            class="download-files__list"
-            id="downloadFilesList"
-            data-i18n-aria-label="panel.downloadListAria"
-          ></ul>
+          <nav class="start-menu" aria-label="Start menu">
+            <a class="start-menu__item" href="#top">
+              <span>Start</span>
+            </a>
+            <a class="start-menu__item" href="#prices" data-i18n="taskbar.prices">Prezzi</a>
+            <a class="start-menu__item" href="#quote" data-i18n="taskbar.quote">Richiedi preventivo</a>
+          </nav>
         </div>
       </section>
+
     </div>
 
     <script src="./app.js" defer></script>
